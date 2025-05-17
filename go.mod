@@ -19,7 +19,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
-	github.com/balhaevhk/protos v0.0.3
+	github.com/balhaevhk/protos v0.0.5
 	github.com/fatih/color v1.18.0
 	github.com/joho/godotenv v1.5.1 // indirect
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6
