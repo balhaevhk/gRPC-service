@@ -5,9 +5,10 @@ import (
 	"grpc-service/internal/lib/logger/handlers/slogpretty"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"grpc-service/internal/app"
-
 )
 
 const (
@@ -27,11 +28,20 @@ func main() {
 
 	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
 
-	application.GRPCServer.MustRun()
+	go application.GRPCServer.MustRun()
 
 	// TODO: инициализировать приложение (app)
 
 	// TODO: запустить gRPC-сервер приложения
+
+	// Gruceful shutdown
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+
+	<-stop
+
+	application.GRPCServer.Stop()
+	log.Info("Gracefully stopped")
 
 }
 
