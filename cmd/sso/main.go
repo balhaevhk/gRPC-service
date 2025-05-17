@@ -1,11 +1,13 @@
 package main
 
 import (
-	// "fmt"
-	"gRPC_service/internal/config"
-	"gRPC_service/internal/lib/logger/handlers/slogpretty"
+	"grpc-service/internal/config"
+	"grpc-service/internal/lib/logger/handlers/slogpretty"
 	"log/slog"
 	"os"
+
+	"grpc-service/internal/app"
+
 )
 
 const (
@@ -21,14 +23,12 @@ func main() {
 	// TODO: инициализировать логгер
 	log := setupLogger(cfg.Env)
 
-	log.Info("starting application", 
-		slog.String("env", cfg.Env),
-		slog.Any("cfg", cfg),
-		slog.Int("port", cfg.GRPC.Port),
-	)
-	log.Debug("debug message")
-	log.Error("error message")
-	log.Warn("warn message")
+	log.Info("starting application", slog.Any("cfg", cfg))
+
+	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
+
+	application.GRPCServer.MustRun()
+
 	// TODO: инициализировать приложение (app)
 
 	// TODO: запустить gRPC-сервер приложения
@@ -64,3 +64,5 @@ opts := slogpretty.PrettyHandlerOptions{
 handler := opts.NewPrettyHandler(os.Stdout)
 return slog. New(handler)
 }
+
+
