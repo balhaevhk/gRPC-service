@@ -21,7 +21,9 @@ require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/balhaevhk/protos v0.0.5
 	github.com/fatih/color v1.18.0
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/joho/godotenv v1.5.1 // indirect
+	golang.org/x/crypto v0.33.0
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
