@@ -18,10 +18,8 @@ const (
 
 )
 func main() {
-	// TODO: инициализировать объкт конфига
 	cfg := config.MustLoad()
 
-	// TODO: инициализировать логгер
 	log := setupLogger(cfg.Env)
 
 	log.Info("starting application", slog.Any("cfg", cfg))
@@ -30,9 +28,6 @@ func main() {
 
 	go application.GRPCServer.MustRun()
 
-	// TODO: инициализировать приложение (app)
-
-	// TODO: запустить gRPC-сервер приложения
 
 	// Gruceful shutdown
 	stop := make(chan os.Signal, 1)
