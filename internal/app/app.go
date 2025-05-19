@@ -9,11 +9,9 @@ import (
 	"grpc-service/internal/storage/sqlite"
 )
 
-
 type App struct {
 	GRPCServer *grpcapp.App
 }
-
 
 func New(
 	log *slog.Logger,
@@ -21,7 +19,7 @@ func New(
 	storagePath string,
 	tokenTTL time.Duration,
 ) *App {
-		storage, err := sqlite.New(storagePath)
+	storage, err := sqlite.New(storagePath)
 	if err != nil {
 		panic(err)
 	}

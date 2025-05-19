@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"grpc-service/internal/services/auth"
-	"grpc-service/internal/storage"
+	// "grpc-service/internal/storage"
 
 	ssov1 "github.com/balhaevhk/protos/gen/go/sso"
 	"google.golang.org/grpc"
@@ -45,17 +45,17 @@ func (s *serverAPI) Login(
 	req *ssov1.LoginRequest,
 ) (*ssov1.LoginResponse, error) {
 	if req.GetEmail() == "" {
-		return nil, status.Error(codes.InvalidArgument, "email is ruquired")
+		return nil, status.Error(codes.InvalidArgument, "email is required")
 	}
 	if req.GetPassword() == "" {
-		return nil, status.Error(codes.InvalidArgument, "password is ruquired")
+		return nil, status.Error(codes.InvalidArgument, "password is required")
 	}
 	if req.GetAppId() == emptyValue {
-		return nil, status.Error(codes.InvalidArgument, "app_id is ruquired")
+		return nil, status.Error(codes.InvalidArgument, "app_id is required")
 	}
 
 	token, err := s.auth.Login(ctx, req.GetEmail(), req.GetPassword(), int(req.GetAppId()))
-	
+
 	if err != nil {
 		if errors.Is(err, auth.ErrInvalidCredentials) {
 			return nil, status.Error(codes.InvalidArgument, "invalid email or password")
@@ -81,7 +81,7 @@ func (s *serverAPI) Register(
 
 	uid, err := s.auth.RegisterNewUser(ctx, req.GetEmail(), req.GetPassword())
 	if err != nil {
-		if errors.Is(err, storage.ErrUserExists) {
+		if errors.Is(err, auth.ErrUserExists) {
 			return nil, status.Error(codes.AlreadyExists, "user already exists")
 		}
 
@@ -101,7 +101,7 @@ func (s *serverAPI) IsAdmin(
 
 	isAdmin, err := s.auth.IsAdmin(ctx, req.GetUserId())
 	if err != nil {
-		if errors.Is(err, storage.ErrAppNotFound) {
+		if errors.Is(err, auth.ErrAppNotFound) {
 			return nil, status.Error(codes.NotFound, "user not found")
 		}
 

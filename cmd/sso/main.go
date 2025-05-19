@@ -13,10 +13,10 @@ import (
 
 const (
 	envLocal = "local"
-	envDev = "dev"
-	envProd = "prod"
-
+	envDev   = "dev"
+	envProd  = "prod"
 )
+
 func main() {
 	cfg := config.MustLoad()
 
@@ -27,7 +27,6 @@ func main() {
 	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
 
 	go application.GRPCServer.MustRun()
-
 
 	// Gruceful shutdown
 	stop := make(chan os.Signal, 1)
@@ -60,14 +59,12 @@ func setupLogger(env string) *slog.Logger {
 }
 
 func setupPrettySlog() *slog.Logger {
-opts := slogpretty.PrettyHandlerOptions{
-	SlogOpts: &slog.HandlerOptions{
-		Level: slog.LevelDebug,
-	},
+	opts := slogpretty.PrettyHandlerOptions{
+		SlogOpts: &slog.HandlerOptions{
+			Level: slog.LevelDebug,
+		},
+	}
+
+	handler := opts.NewPrettyHandler(os.Stdout)
+	return slog.New(handler)
 }
-
-handler := opts.NewPrettyHandler(os.Stdout)
-return slog. New(handler)
-}
-
-

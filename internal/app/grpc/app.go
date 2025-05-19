@@ -6,10 +6,9 @@ import (
 	"net"
 
 	authgrpc "grpc-service/internal/grpc/auth"
+
 	"google.golang.org/grpc"
 )
-
-
 
 type App struct {
 	log        *slog.Logger

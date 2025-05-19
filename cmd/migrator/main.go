@@ -47,4 +47,3 @@ func main() {
 
 	fmt.Println("migrations applied")
 }
-

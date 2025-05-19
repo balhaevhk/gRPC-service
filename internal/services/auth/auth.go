@@ -25,6 +25,8 @@ type Auth struct {
 
 var (
 	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrUserExists   = errors.New("user already exists")
+	ErrAppNotFound  = errors.New("app not found")
 )
 
 // //go:generate go run github.com/vektra/mockery/v2@v2.28.2 --name=URLSaver
@@ -131,6 +133,10 @@ func (a *Auth) RegisterNewUser(ctx context.Context, email string, pass string) (
 
 	id, err := a.usrSaver.SaveUser(ctx, email, passHash)
 	if err != nil {
+		if errors.Is(err, storage.ErrUserExists) {
+			log.Warn("user already exists", sl.Err(err))
+					return 0, fmt.Errorf("%s: %w", op, ErrUserExists)
+		}
 		log.Error("failed to save user", sl.Err(err))
 
 		return 0, fmt.Errorf("%s: %w", op, err)
